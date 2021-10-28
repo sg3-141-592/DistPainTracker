@@ -1,0 +1,10 @@
+tasks:
+  - init: |
+    python3 -m venv venv
+    . venv/bin/activate
+    export PIP_USER=false
+    pip install -r requirements.txt
+
+vscode:
+  extensions:
+    - ms-python.python
