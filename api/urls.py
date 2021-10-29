@@ -10,5 +10,6 @@ router.register(r'pains', PainViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('/api-auth/', include('rest_framework.urls'))
+    path('/api-auth/', include('rest_framework.urls')),
+    path('search/', include('haystack.urls'))
 ]
