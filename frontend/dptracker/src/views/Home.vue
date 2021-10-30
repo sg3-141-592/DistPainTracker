@@ -8,11 +8,13 @@
         </router-link>
       </li>
     </ul>
+    <br>
   </div>
 </template>
 
 <script>
 import { inject } from 'vue'
+import store from '../store'
 
 export default {
   name: 'Home',
@@ -25,7 +27,12 @@ export default {
     }
   },
   mounted() {
-    fetch(`/api/pains`)
+    let headers = new Headers();
+    headers.append('Authorization', `Token ${store.state.token}`)
+    fetch(`/api/pains`, {
+      method: 'GET',
+      headers: headers
+    })
       .then(response => response.json())
       .then(data => this.recentPain = data);
   },

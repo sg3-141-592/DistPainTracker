@@ -19,7 +19,12 @@
                 <label class="label">Labels</label>
                 <div class="tags are-medium">
                     <div v-for="label in painData.labels" :key="label.id">
-                        <span class="tag">{{ label.name }} <button v-if="editEnabled" class="delete is-small">abc</button></span>
+                        <span class="tag">
+                            <router-link :to="{ name: 'view-label', params: { id: label.id }}">
+                            {{ label.name }}
+                            </router-link>
+                            <button v-if="editEnabled" class="delete is-small"></button>
+                        </span>
                         &nbsp;
                     </div>
                 </div>
@@ -29,11 +34,19 @@
 </template>
 
 <script>
+import store from '../store'
+
 export default {
     mounted() {
-        fetch(`/api/pains/${ this.$route.params.id }`)
-        .then(response => response.json())
-        .then(data => this.painData = data);
+        let headers = new Headers();
+        headers.append('Authorization', `Token ${store.state.token}`)
+
+        fetch(`/api/pains/${ this.$route.params.id }`, {
+            method: 'GET',
+            headers: headers
+        })
+            .then(response => response.json())
+            .then(data => this.painData = data);
     },
     data() {
         return {

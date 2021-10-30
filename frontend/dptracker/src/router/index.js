@@ -3,6 +3,7 @@ import Home from '../views/Home.vue'
 import Profile from '../views/Profile.vue'
 import ViewPain from '../views/ViewPain.vue'
 import ViewLabel from '../views/ViewLabel.vue'
+import Login from '../views/Login.vue'
 
 const routes = [
   {
@@ -32,6 +33,11 @@ const routes = [
     path: '/view-label/:id',
     name: 'view-label',
     component: ViewLabel,
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login,
   }
 ]
 
