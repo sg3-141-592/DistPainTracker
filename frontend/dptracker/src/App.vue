@@ -1,4 +1,14 @@
 <template>
+  <!-- Need to take this out later -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+  
+  <section class="hero is-small">
+    <div class="hero-body">
+      <p class="title">
+        <i class="far fa-frown-open"></i> Distributed Pain Tracker
+      </p>
+    </div>
+  </section>
   <div class="tabs is-centered">
     <ul>
       <li><router-link to="/">Home</router-link></li>
@@ -6,7 +16,9 @@
       <li><router-link to="/profile">Profile</router-link></li>
     </ul>
   </div>
-  <router-view/>
+  <section class="section">
+    <router-view/>
+  </section>
 </template>
 
 <script>
@@ -24,7 +36,6 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
 </style>

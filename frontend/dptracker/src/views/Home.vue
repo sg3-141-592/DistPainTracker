@@ -1,7 +1,11 @@
 <template>
   <div class="home">
-    Recent Pain
-
+    Do any of these resonate with you?
+    <ul v-if="recentPain !== null">
+      <li v-for="result in recentPain.results" :key="result.id">
+        {{ result.title }} <!-- <i class="far fa-heart"></i> -->
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -19,9 +23,14 @@ export default {
     }
   },
   mounted() {
-    fetch(`${this.apiURL}pains`)
+    fetch(`/api/pains`)
       .then(response => response.json())
-      .then(data => console.log(data));
+      .then(data => this.recentPain = data);
+  },
+  data() {
+    return {
+      recentPain: null
+    }
   }
 }
 </script>

@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Profile from '../views/Profile.vue'
+import ViewPain from '../views/ViewPain.vue'
 
 const routes = [
   {
@@ -20,6 +21,11 @@ const routes = [
     path: '/profile',
     name: 'profile',
     component: Profile,
+  },
+  {
+    path: '/view-pain/:id',
+    name: 'view-pain',
+    component: ViewPain,
   }
 ]
 
