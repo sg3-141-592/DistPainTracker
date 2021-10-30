@@ -3,7 +3,9 @@
     Do any of these resonate with you?
     <ul v-if="recentPain !== null">
       <li v-for="result in recentPain.results" :key="result.id">
-        {{ result.title }} <!-- <i class="far fa-heart"></i> -->
+        <router-link :to="{ name: 'view-pain', params: { id: result.id }}">
+          {{ result.title }} <!-- <i class="far fa-heart"></i> -->
+        </router-link>
       </li>
     </ul>
   </div>

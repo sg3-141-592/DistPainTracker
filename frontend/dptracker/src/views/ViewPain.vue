@@ -1,7 +1,5 @@
 <template>
     <div class="viewpain">
-        Viewing Pain {{ $route.params.id }}
-        {{ painData }}
         <div class="container" v-if="painData !== null">
             <div class="field">
                 <label class="label">Title</label>
@@ -14,6 +12,16 @@
                 <label class="label">Description</label>
                 <div class="control">
                     <textarea class="textarea" :value="painData.description" :disabled="!editEnabled"></textarea>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Labels</label>
+                <div class="tags are-medium">
+                    <div v-for="label in painData.labels" :key="label.id">
+                        <span class="tag">{{ label.name }} <button v-if="editEnabled" class="delete is-small">abc</button></span>
+                        &nbsp;
+                    </div>
                 </div>
             </div>
         </div>

@@ -4,15 +4,24 @@ from .models import Label, Pain
 class LabelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Label
-        fields = ['name']
+        fields = ['id', 'name']
 
-class PainSerializer(serializers.ModelSerializer):
+class PainLabelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pain
+        fields = ['id', 'title']
 
-    labels = serializers.SlugRelatedField(
-        many=True,
-        read_only=False,
-        queryset = Label.objects.all(),
-        slug_field='name')
+class DetailLabelSerializer(serializers.ModelSerializer):
+
+    pain = PainLabelSerializer(many=True)
+
+    class Meta:
+        model = Label
+        fields = ['id', 'name', 'pain']
+
+class DetailPainSerializer(serializers.ModelSerializer):
+
+    labels = LabelSerializer(many=True)
 
     class Meta:
         model = Pain
