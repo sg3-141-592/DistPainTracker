@@ -15,6 +15,7 @@
 <script>
 import { inject } from 'vue'
 import store from '../store'
+import router from '../router/index.js' 
 
 export default {
   name: 'Home',
@@ -33,8 +34,18 @@ export default {
       method: 'GET',
       headers: headers
     })
-      .then(response => response.json())
-      .then(data => this.recentPain = data);
+      .then(function(response) {
+        if (response.status === 401) {
+          console.log("Unauthorized, redirecting ...");
+          router.push({name: 'login'})
+        }
+        return response.json()
+      })
+      .then(data => this.recentPain = data)
+      // .catch(function(error)
+      // {
+      //   console.log("Unauthorized, redirecting");
+      // });
   },
   data() {
     return {
