@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
-from .serializers import LabelSerializer, DetailPainSerializer, DetailLabelSerializer
+from .serializers import LabelSerializer, DetailPainSerializer, DetailLabelSerializer, CreatePainSerializer
 from .models import Label, Pain
 
 class LabelViewSet(viewsets.ModelViewSet):
@@ -17,3 +17,8 @@ class LabelViewSet(viewsets.ModelViewSet):
 class PainViewSet(viewsets.ModelViewSet):
     queryset = Pain.objects.all()
     serializer_class = DetailPainSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return CreatePainSerializer
+        return DetailPainSerializer

@@ -26,3 +26,17 @@ class DetailPainSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pain
         fields = ['title', 'description', 'labels', 'created', 'id']
+    
+    def create(self, validated_data):
+        newPain = Pain(
+            title= validated_data['title'],
+            description= validated_data['description']
+        )
+        newPain.save()
+        return newPain
+
+class CreatePainSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Pain
+        fields = ['title', 'description', 'labels']

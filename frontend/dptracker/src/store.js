@@ -1,4 +1,5 @@
 import { createStore } from "vuex"
+import { VuexPersistence } from 'vuex-persist'
 
 const store = createStore({
     state: {
@@ -8,7 +9,8 @@ const store = createStore({
         updateToken(state, newToken) {
             state.token = newToken
         }
-    }
+    },
+    plugins: [new VuexPersistence().plugin]
 })
 
 export default store
