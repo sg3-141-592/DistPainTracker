@@ -30,7 +30,7 @@ export default {
   mounted() {
     let headers = new Headers();
     headers.append('Authorization', `Token ${store.state.token}`)
-    fetch(`/api/pains`, {
+    fetch(`/api/pains/`, {
       method: 'GET',
       headers: headers
     })
@@ -42,10 +42,6 @@ export default {
         return response.json()
       })
       .then(data => this.recentPain = data)
-      // .catch(function(error)
-      // {
-      //   console.log("Unauthorized, redirecting");
-      // });
   },
   data() {
     return {

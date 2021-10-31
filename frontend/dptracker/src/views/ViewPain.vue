@@ -18,15 +18,12 @@
             <div class="field">
                 <label class="label">Labels</label>
                 <div class="tags are-medium">
-                    <div v-for="label in painData.labels" :key="label.id">
-                        <span class="tag">
-                            <router-link :to="{ name: 'view-label', params: { id: label.id }}">
-                            {{ label.name }}
-                            </router-link>
-                            <button v-if="editEnabled" class="delete is-small"></button>
-                        </span>
-                        &nbsp;
-                    </div>
+                    <span v-for="label in painData.labels" :key="label.id" class="tag">
+                        <router-link :to="{ name: 'view-label', params: { id: label.id }}">
+                        {{ label.name }}
+                        </router-link>
+                        <button v-if="editEnabled" class="delete is-small"></button>
+                    </span>
                 </div>
             </div>
         </div>

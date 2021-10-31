@@ -39,4 +39,4 @@ class CreatePainSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Pain
-        fields = ['title', 'description', 'labels']
+        fields = ['title', 'description', 'labels', 'id']

@@ -15,7 +15,7 @@
                 </div>
             </div>
 
-            <label-autocomplete></label-autocomplete>
+            <label-autocomplete @changedLabels="selectedLabels = $event"></label-autocomplete>
 
             <div class="field">
                 <div class="control">
@@ -49,7 +49,7 @@ export default {
                 body: JSON.stringify({
                     title: this.title,
                     description: this.description,
-                    labels: []
+                    labels: this.selectedLabels
                 })
             })
                 .then(response => response.json())
@@ -60,6 +60,7 @@ export default {
         return {
             title: "",
             description: "",
+            selectedLabels: null,
         }
     }
 }
