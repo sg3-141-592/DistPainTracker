@@ -6,14 +6,14 @@
                 <div class="field">
                     <p class="control is-expanded has-icons-right">
                         <input class="input" type="search" @focus="labelDropdownVisible = true"
-                            @blur="labelDropdownVisible = false" placeholder="Add label..."/>
+                            @blur="labelDropdownVisible = false" v-model="labelSearchTerm" placeholder="Add label..."/>
                         <span class="icon is-small is-right"><i class="fas fa-tag"></i></span>
                     </p>
                 </div>
             </div>
             <div v-if="labelDropdownVisible" class="dropdown-menu" role="menu">
                 <div class="dropdown-content">
-                    <a v-for="label in labels" :key="`label-${label}`"
+                    <a v-for="label in visibleLabels" :key="`label-${label}`"
                         @mousedown="addLabel(label)" class="dropdown-item">
                         {{ label.name }}
                     </a>
@@ -48,15 +48,33 @@ export default {
             .then(data => this.labels = data.results)
     },
     emits: ['changedLabels'],
+    watch: {
+        labelSearchTerm(newVal) {
+            if (newVal.length > 0) {
+                let newLabels = [];
+                this.labels.forEach(function(element) {
+                    if (element.name.match(new RegExp(newVal, 'i')) != null) {
+                        newLabels.push(element);
+                    }
+                })
+                this.visibleLabels = newLabels;
+            } else {
+                this.visibleLabels = this.labels;
+            }
+        }
+    },
     methods: {
         addLabel: function(label) {
-            this.selectedLabels.push(label)
-            // Convert array of structs to array of labels
-            let arrayLabels = []
-            this.selectedLabels.forEach(element => {
-                arrayLabels.push(element.id)
-            });
-            this.$emit('changedLabels', arrayLabels)
+            // Check if label is already in the list
+            if (!this.selectedLabels.includes(label)) {
+                this.selectedLabels.push(label)
+                // Convert array of structs to array of labels
+                let arrayLabels = []
+                this.selectedLabels.forEach(element => {
+                    arrayLabels.push(element.id)
+                });
+                this.$emit('changedLabels', arrayLabels)   
+            }
         },
         deleteLabel: function(label) {
             var index = this.selectedLabels.indexOf(label);
@@ -75,7 +93,9 @@ export default {
         return {
             labelDropdownVisible: false,
             labels: [],
-            selectedLabels: []
+            visibleLabels: [],
+            selectedLabels: [],
+            labelSearchTerm: "",
         }
     }
 }
