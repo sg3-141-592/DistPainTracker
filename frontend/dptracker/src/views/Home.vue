@@ -4,7 +4,7 @@
     <ul v-if="recentPain !== null">
       <li v-for="result in recentPain.results" :key="result.id">
         <router-link :to="{ name: 'view-pain', params: { id: result.id }}">
-          {{ result.title }} <!-- <i class="far fa-heart"></i> -->
+          {{ result.title }} - {{ result.vote_count }} <!-- <i class="far fa-heart"></i> -->
         </router-link>
       </li>
     </ul>

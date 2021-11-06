@@ -1,6 +1,8 @@
 <template>
     <div class="viewpain">
         <div class="container" v-if="painData !== null">
+            <upvote :votes="painData.vote_count" :can_vote="painData.can_vote"
+                :pain_id="painData.id" @voteChanged="reloadPage()"></upvote>
             <div class="field">
                 <label class="label">Title</label>
                 <div class="control">
@@ -32,18 +34,27 @@
 
 <script>
 import store from '../store'
+import Upvote from '../components/Upvote.vue'
 
 export default {
-    mounted() {
-        let headers = new Headers();
-        headers.append('Authorization', `Token ${store.state.token}`)
+    components: {
+        Upvote
+    },
+    methods: {
+        reloadPage : function() {
+            let headers = new Headers();
+            headers.append('Authorization', `Token ${store.state.token}`)
 
-        fetch(`/api/pains/${ this.$route.params.id }`, {
-            method: 'GET',
-            headers: headers
-        })
-            .then(response => response.json())
-            .then(data => this.painData = data);
+            fetch(`/api/pains/${ this.$route.params.id }/`, {
+                method: 'GET',
+                headers: headers
+            })
+                .then(response => response.json())
+                .then(data => this.painData = data);
+        }
+    },
+    mounted() {
+        this.reloadPage()
     },
     data() {
         return {

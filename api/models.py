@@ -13,12 +13,16 @@ class Pain(models.Model):
     labels = models.ManyToManyField(Label, related_name='pain')
     created = models.DateTimeField(auto_now_add=True)
 
+    @property
+    def vote_count(self):
+        return Vote.objects.filter(pain__id=self.id).count()
+
     def __str__(self):
         return self.title
 
 class Vote(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    pain =  models.ForeignKey(Pain, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='vote', on_delete=models.CASCADE)
+    pain =  models.ForeignKey(Pain, related_name='vote', on_delete=models.CASCADE)
 
     class Meta:
         unique_together = ('user', 'pain')

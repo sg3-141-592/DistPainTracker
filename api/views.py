@@ -1,8 +1,9 @@
 from rest_framework import viewsets
+from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import IsAuthenticated
 
-from .serializers import LabelSerializer, DetailPainSerializer, DetailLabelSerializer, CreatePainSerializer
-from .models import Label, Pain
+from .serializers import *
+from .models import Label, Pain, Vote
 
 class LabelViewSet(viewsets.ModelViewSet):
     queryset = Label.objects.all()
@@ -22,3 +23,12 @@ class PainViewSet(viewsets.ModelViewSet):
         if self.action == 'create':
             return CreatePainSerializer
         return DetailPainSerializer
+
+class VoteViewSet(viewsets.ModelViewSet):
+    queryset = Vote.objects.all()
+    serializer_class = VoteSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return CreateVoteSerializer
+        return VoteSerializer

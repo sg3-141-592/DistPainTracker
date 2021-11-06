@@ -18,7 +18,7 @@ export default {
     mounted() {
         let headers = new Headers();
         headers.append('Authorization', `Token ${store.state.token}`)
-        fetch(`/api/labels/${ this.$route.params.id }`, {
+        fetch(`/api/labels/${ this.$route.params.id }/`, {
             method: 'GET',
             headers: headers
         })
