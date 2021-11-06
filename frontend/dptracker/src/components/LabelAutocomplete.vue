@@ -13,7 +13,7 @@
             </div>
             <div v-if="labelDropdownVisible" class="dropdown-menu" role="menu">
                 <div class="dropdown-content">
-                    <a v-for="label in visibleLabels" :key="`label-${label}`"
+                    <a v-for="label in visibleLabelList" :key="`label-${label}`"
                         @mousedown="addLabel(label)" class="dropdown-item">
                         {{ label.name }}
                     </a>
@@ -46,20 +46,33 @@ export default {
                 return response.json()
             })
             .then(data => this.labels = data.results)
+        this.labelSearchTerm = "";
     },
     emits: ['changedLabels'],
-    watch: {
-        labelSearchTerm(newVal) {
-            if (newVal.length > 0) {
-                let newLabels = [];
-                this.labels.forEach(function(element) {
-                    if (element.name.match(new RegExp(newVal, 'i')) != null) {
+    computed: {
+        visibleLabelList() {
+            // Filter any labels that have already been used
+            let filteredLabels = []
+            this.labels.forEach(function(element) {
+                var index = this.selectedLabels.indexOf(element); 
+                if (index == -1) {
+                    filteredLabels.push(element)
+                } 
+            }.bind(this))
+            
+            if(this.labelSearchTerm.length > 0) {
+                let newLabels = []
+                filteredLabels.forEach(function(element) {
+                    // If the label matches the search term
+                    if (element.name.match(new RegExp(this.labelSearchTerm, 'i')) != null) {
                         newLabels.push(element);
                     }
-                })
-                this.visibleLabels = newLabels;
-            } else {
-                this.visibleLabels = this.labels;
+                }.bind(this))
+                return newLabels
+            }
+            else
+            {
+                return filteredLabels
             }
         }
     },
@@ -93,7 +106,6 @@ export default {
         return {
             labelDropdownVisible: false,
             labels: [],
-            visibleLabels: [],
             selectedLabels: [],
             labelSearchTerm: "",
         }
