@@ -3,7 +3,7 @@
         <label class="label">{{ votes }} votes</label>
         <button class="button" @click="VotePressed()" :disabled="!buttonEnabled">
             <span class="icon">
-            <i class="fas fa-sort-up"></i>
+            <i :class="editIcon"></i>
             </span>
             <span>{{ editText }}</span>
     </button>
@@ -15,6 +15,7 @@ import store from '../store'
 
 export default ({
     props: ['votes', 'can_vote', 'pain_id'],
+    emits: ['voteChanged'],
     computed: {
         editText: function() {
             if (this.can_vote == -1) {
@@ -22,9 +23,15 @@ export default ({
             } else {
                 return "Remove vote"
             }
+        },
+        editIcon: function() {
+            if (this.can_vote == -1) {
+                return "fas fa-sort-up"
+            } else {
+                return "fas fa-eraser"
+            }
         }
     },
-    emits: ['voteChanged'],
     methods: {
         VotePressed : function() {
             
@@ -45,14 +52,18 @@ export default ({
                         pain: this.pain_id
                     })
                 })
-                    .then(this.$emit('voteChanged'))
+                    .then(function() {
+                        this.$emit('voteChanged')
+                    }.bind(this))
             } else {
                 //"Remove vote"
                 fetch(`/api/votes/${this.can_vote}/`, {
                     method: 'DELETE',
                     headers: headers
                 })
-                    .then(this.$emit('voteChanged'))
+                    .then(function() {
+                        this.$emit('voteChanged')
+                    }.bind(this))
             }
             this.buttonEnabled = true
         }

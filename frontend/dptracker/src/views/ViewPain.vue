@@ -33,9 +33,10 @@ export default {
     components: {
         Upvote
     },
-    methods: {
-        reloadPage : function() {
-            let headers = new Headers();
+    methods : {
+        reloadPage() {
+            console.log("Loading")
+            let headers = new Headers()
             headers.append('Authorization', `Token ${store.state.token}`)
 
             fetch(`/api/pains/${ this.$route.params.id }/`, {
