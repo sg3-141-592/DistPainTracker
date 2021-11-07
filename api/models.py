@@ -10,7 +10,7 @@ class Label(models.Model):
 class Pain(models.Model):
     title = models.CharField(max_length=256)
     description = models.TextField()
-    labels = models.ManyToManyField(Label, related_name='pain')
+    labels = models.ManyToManyField(Label, blank=True, related_name='pain')
     created = models.DateTimeField(auto_now_add=True)
 
     @property

@@ -4,21 +4,14 @@
             <upvote :votes="painData.vote_count" :can_vote="painData.can_vote"
                 :pain_id="painData.id" @voteChanged="reloadPage()"></upvote>
             <div class="field">
-                <label class="label">Title</label>
-                <div class="control">
-                    <input class="input" type="text" :value="painData.title" :disabled="!editEnabled">
-                </div>
+                <h3 class="title is-3">{{ painData.title }}</h3>
             </div>
 
             <div class="field">
-                <label class="label">Description</label>
-                <div class="control">
-                    <textarea class="textarea" :value="painData.description" :disabled="!editEnabled"></textarea>
-                </div>
+                <div v-html="painData.description" class="content"></div>
             </div>
 
             <div class="field">
-                <label class="label">Labels</label>
                 <div class="tags are-medium">
                     <span v-for="label in painData.labels" :key="label.id" class="tag">
                         <router-link :to="{ name: 'view-label', params: { id: label.id }}">

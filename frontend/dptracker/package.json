@@ -8,6 +8,9 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@tiptap/starter-kit": "^2.0.0-beta.133",
+    "@tiptap/vue-3": "^2.0.0-beta.75",
+    "@vueup/vue-quill": "^1.0.0-beta.7",
     "base-64": "^1.0.0",
     "bulma": "^0.9.3",
     "core-js": "^3.6.5",

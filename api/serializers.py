@@ -47,6 +47,7 @@ class DetailPainSerializer(serializers.ModelSerializer):
         newPain.save()
         return newPain
 
+
 class CreatePainSerializer(serializers.ModelSerializer):
 
     class Meta:

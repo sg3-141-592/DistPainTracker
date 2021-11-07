@@ -11,7 +11,8 @@
             <div class="field">
                 <label class="label">Description</label>
                 <div class="control">
-                    <textarea v-model="description" class="textarea"></textarea>
+                    <!-- <textarea v-model="description" class="textarea"></textarea> -->
+                    <QuillEditor contentType="html" v-model:content="description" theme="snow"/>
                 </div>
             </div>
 
@@ -29,11 +30,11 @@
 <script>
 import store from '../store'
 import router from '../router/index.js'
-import LabelAutocomplete from '../components/LabelAutocomplete.vue' 
+import LabelAutocomplete from '../components/LabelAutocomplete.vue'
 
 export default {
     components: {
-        LabelAutocomplete
+        LabelAutocomplete,
     },
     methods: {
         submitPain: function () {
@@ -60,7 +61,7 @@ export default {
         return {
             title: "",
             description: "",
-            selectedLabels: null,
+            selectedLabels: [],
         }
     }
 }
