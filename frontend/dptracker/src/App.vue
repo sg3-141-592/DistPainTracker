@@ -2,31 +2,53 @@
   <!-- Need to take this out later -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
   
-  <section class="hero is-small">
+  <section class="hero is-small is-link">
     <div class="hero-body">
       <p class="title">
         <i class="far fa-frown-open"></i> Distributed Pain Tracker
       </p>
     </div>
+    <div class="tabs is-centered">
+      <ul>
+        <li><router-link to="/">Home</router-link></li>
+        <li><router-link to="/create-pain">Create Pain</router-link></li>
+        <li><router-link to="/login">
+          <span class="icon-text">
+            <span class="icon">
+              <i :class="loginIcon"></i>
+            </span>
+            <span>{{ loginText }}</span>
+          </span>
+        </router-link></li>
+      </ul>
+    </div>
   </section>
-  <div class="tabs is-centered">
-    <ul>
-      <li><router-link to="/">Home</router-link></li>
-      <li><router-link to="/create-pain">Create Pain</router-link></li>
-      <li><router-link to="/login">Login</router-link></li>
-    </ul>
-  </div>
-  <section class="section">
-    <router-view/>
+  <section class="section pt-4">
+    <div class="container">
+      <router-view/>
+    </div>
   </section>
 </template>
 
 <script>
-import { provide } from 'vue'
+import store from '../src/store'
 
 export default {
-  setup() {
-    provide('apiURL', 'https://8000-copper-cat-xkqw0zjh.ws-eu18.gitpod.io/api/')
+  computed: {
+    loginText() {
+      if (store.state.token == "TO_BE_DEFINED") {
+        return "Login"
+      } else {
+        return store.state.email
+      }
+    },
+    loginIcon() {
+      if (store.state.token == "TO_BE_DEFINED") {
+        return "fas fa-sign-in-alt"
+      } else {
+        return "fas fa-user"
+      }
+    }
   }
 }
 </script>

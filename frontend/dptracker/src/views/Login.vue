@@ -40,9 +40,12 @@ export default {
                 })
             })
                 .then(response => response.json()) 
-                .then(json =>
-                    store.commit('updateToken', json.token)
-                );
+                .then(function(json) {
+                    store.commit('updateToken', {
+                        'token': json.token,
+                        'email': this.email
+                    })
+                }.bind(this));
         }
     },
     data() {

@@ -13,20 +13,11 @@
 </template>
 
 <script>
-import { inject } from 'vue'
 import store from '../store'
 import router from '../router/index.js' 
 
 export default {
   name: 'Home',
-  components: { },
-  setup() {
-    const apiURL = inject('apiURL');
-
-    return {
-      apiURL
-    }
-  },
   mounted() {
     let headers = new Headers();
     headers.append('Authorization', `Token ${store.state.token}`)
