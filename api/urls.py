@@ -8,6 +8,7 @@ router = routers.DefaultRouter()
 router.register(r'labels', LabelViewSet)
 router.register(r'pains', PainViewSet)
 router.register(r'votes', VoteViewSet)
+router.register(r'comments', CommentViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

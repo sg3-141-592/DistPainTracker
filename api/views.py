@@ -1,9 +1,10 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from .serializers import *
-from .models import Label, Pain, Vote
+from .models import Label, Pain, Vote, Comment
 
 class LabelViewSet(viewsets.ModelViewSet):
     queryset = Label.objects.all()
@@ -32,3 +33,14 @@ class VoteViewSet(viewsets.ModelViewSet):
         if self.action == 'create':
             return CreateVoteSerializer
         return VoteSerializer
+
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['pain']
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return CreateCommentSerializer
+        return CommentSerializer

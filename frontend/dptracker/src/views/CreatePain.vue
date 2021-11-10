@@ -11,7 +11,6 @@
             <div class="field">
                 <label class="label">Description</label>
                 <div class="control">
-                    <!-- <textarea v-model="description" class="textarea"></textarea> -->
                     <QuillEditor contentType="html" v-model:content="description" theme="snow"/>
                 </div>
             </div>

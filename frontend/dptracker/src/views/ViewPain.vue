@@ -1,5 +1,6 @@
 <template>
     <div class="viewpain">
+        <!-- -->
         <div class="container" v-if="painData !== null">
             <upvote :votes="painData.vote_count" :can_vote="painData.can_vote"
                 :pain_id="painData.id" @voteChanged="reloadPage()"></upvote>
@@ -22,6 +23,27 @@
                 </div>
             </div>
         </div>
+
+        <br>
+        <div class="field">
+            <label class="label">New Comment</label>
+            <div class="control">
+                <QuillEditor contentType="html" v-model:content="newComment" theme="snow"/>
+            </div>
+        </div>
+        <div class="field">
+            <div class="control">
+                <button class="button is-link" v-on:click="createComment">Create</button>
+            </div>
+        </div>
+
+        <!-- -->
+        <div class="container" v-if="commentData !== null">
+            <div v-for="result in commentData.results" :key="result.id">
+                <div v-html="result.text" class="content"></div>
+                {{ result.user }} - {{ result.created }}
+            </div>
+        </div>
     </div>
 </template>
 
@@ -35,16 +57,44 @@ export default {
     },
     methods : {
         reloadPage() {
-            console.log("Loading")
             let headers = new Headers()
             headers.append('Authorization', `Token ${store.state.token}`)
 
+            // Get pain data
             fetch(`/api/pains/${ this.$route.params.id }/`, {
                 method: 'GET',
                 headers: headers
             })
                 .then(response => response.json())
                 .then(data => this.painData = data);
+            
+            // Get comments data for current pain /api/comments/?pain=1
+            fetch(`/api/comments/?pain=${ this.$route.params.id }`, {
+                method: 'GET',
+                headers: headers
+            })
+                .then(response => response.json())
+                .then(data => this.commentData = data);
+        },
+        createComment() {
+            let headers = new Headers({
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json'
+                });
+            headers.append('Authorization', `Token ${store.state.token}`)
+
+            fetch(`/api/comments/`, {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify({
+                    pain: this.$route.params.id,
+                    text: this.newComment,
+                })
+            })
+                .then(response => response.json())
+                .then(() => {
+                    this.reloadPage()
+                })
         }
     },
     mounted() {
@@ -53,7 +103,9 @@ export default {
     data() {
         return {
             painData: null,
+            commentData: null,
             editEnabled: false,
+            newComment: null,
         }
     }
 }

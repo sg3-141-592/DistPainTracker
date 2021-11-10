@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.fields import CurrentUserDefault
-from .models import Label, Pain, Vote
+from .models import Label, Pain, Vote, Comment
 
 class LabelSerializer(serializers.ModelSerializer):
     class Meta:
@@ -69,3 +69,21 @@ class VoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vote
         fields = ['id', 'user', 'pain']
+
+class CommentSerializer(serializers.ModelSerializer):
+
+    user = serializers.ReadOnlyField(source="user.username")
+
+    class Meta:
+        model = Comment
+        fields = ['id', 'user', 'pain', 'text', 'created']
+
+class CreateCommentSerializer(serializers.ModelSerializer):
+
+    user = serializers.HiddenField(
+        default=serializers.CurrentUserDefault()
+    )
+
+    class Meta:
+        model = Comment
+        fields = ['user', 'pain', 'text']

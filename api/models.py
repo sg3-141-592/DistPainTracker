@@ -21,11 +21,20 @@ class Pain(models.Model):
         return self.title
 
 class Vote(models.Model):
-    user = models.ForeignKey(User, related_name='vote', on_delete=models.CASCADE)
-    pain =  models.ForeignKey(Pain, related_name='vote', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='votes', on_delete=models.CASCADE)
+    pain =  models.ForeignKey(Pain, related_name='votes', on_delete=models.CASCADE)
 
     class Meta:
         unique_together = ('user', 'pain')
     
     def __str__(self):
         return str(self.user) + " : " + str(self.pain)
+
+class Comment(models.Model):
+    user = models.ForeignKey(User, related_name='comments', on_delete=models.CASCADE)
+    pain =  models.ForeignKey(Pain, related_name='comments', on_delete=models.CASCADE)
+    text = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.pain.title) + " : " + str(self.user) + " : " + self.created.strftime("%m/%d/%Y, %H:%M:%S")
