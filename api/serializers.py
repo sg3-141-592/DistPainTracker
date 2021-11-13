@@ -7,6 +7,11 @@ class LabelSerializer(serializers.ModelSerializer):
         model = Label
         fields = ['id', 'name']
 
+class CreateLabelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Label
+        fields = ['name']
+
 class PainLabelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Pain

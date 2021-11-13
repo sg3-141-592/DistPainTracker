@@ -13,6 +13,12 @@
             </div>
             <div v-if="labelDropdownVisible" class="dropdown-menu" role="menu">
                 <div class="dropdown-content">
+                    <!-- Optional create new label feature -->
+
+                    <div v-if="createNewLabel">
+                        <a class="dropdown-item" @mousedown="createLabel">Create label: {{ labelSearchTerm }}</a>
+                        <hr class="dropdown-divider">
+                    </div>
                     <a v-for="label in visibleLabelList" :key="`label-${label}`"
                         @mousedown="addLabel(label)" class="dropdown-item">
                         {{ label.name }}
@@ -36,20 +42,24 @@ import store from '../store'
 
 export default {
     mounted() {
-        let headers = new Headers();
-        headers.append('Authorization', `Token ${store.state.token}`)
-        fetch(`/api/labels/`, {
-            method: 'GET',
-            headers: headers
-        })
-            .then(function(response) {
-                return response.json()
-            })
-            .then(data => this.labels = data.results)
-        this.labelSearchTerm = "";
+        this.loadLabels()
+        this.labelSearchTerm = ""
     },
     emits: ['changedLabels'],
     computed: {
+        createNewLabel() {
+            if(this.labelSearchTerm.length < 3) {
+                return false
+            }
+            let match = false
+            this.labels.forEach(function(element) {
+                if(this.labelSearchTerm.toUpperCase()
+                    === element.name.toUpperCase()){
+                    match = true
+                }
+            }.bind(this))
+            return !match
+        },
         visibleLabelList() {
             // Filter any labels that have already been used
             let filteredLabels = []
@@ -77,6 +87,18 @@ export default {
         }
     },
     methods: {
+        loadLabels: function() {
+            let headers = new Headers();
+            headers.append('Authorization', `Token ${store.state.token}`)
+            fetch(`/api/labels/`, {
+                method: 'GET',
+                headers: headers
+            })
+                .then(function(response) {
+                    return response.json()
+                })
+                .then(data => this.labels = data.results)
+        },
         addLabel: function(label) {
             // Check if label is already in the list
             if (!this.selectedLabels.includes(label)) {
@@ -100,6 +122,30 @@ export default {
                 arrayLabels.push(element.id)
             });
             this.$emit('changedLabels', arrayLabels)
+        },
+        createLabel: function() {
+            let headers = new Headers({
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            });
+            headers.append('Authorization', `Token ${store.state.token}`)
+
+            fetch(`/api/labels/`, {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify({
+                    name: this.labelSearchTerm
+                })
+            })
+                .then(response => response.json())
+                .then(function(data) {
+                    console.log(data.id)
+                    this.loadLabels()
+                    this.addLabel({
+                        id:data.id,
+                        name: this.labelSearchTerm
+                    })
+                }.bind(this))
         }
     },
     data () {

@@ -13,6 +13,8 @@ class LabelViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.action == 'list':
             return LabelSerializer
+        elif self.action == 'create':
+            return CreateLabelSerializer
         else:
             return DetailLabelSerializer
 
