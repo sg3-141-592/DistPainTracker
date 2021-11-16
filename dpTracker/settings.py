@@ -39,10 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    # 'haystack',
+    'haystack',
     'api',
     'corsheaders',
-    'django_filters'
+    'django_filters',
+    'django_celery_results',
 ]
 
 REST_FRAMEWORK = {
@@ -59,9 +60,8 @@ REST_FRAMEWORK = {
 
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack.backends.elasticsearch7_backend.Elasticsearch7SearchEngine',
-        'URL': 'http://127.0.0.1:9200/',
-        'INDEX_NAME': 'haystack',
+        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+        'URL': 'http://127.0.0.1:8983/solr',
     },
 }
 
@@ -154,3 +154,7 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#
+CELERY_RESULTS_BACKEND = 'django-db'
+BROKER_URL = 'amqp://guest:guest@localhost:6379//'
